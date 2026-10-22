@@ -31,7 +31,7 @@ make preview    # refresh the PNG previews
 
 Requirements: a TeX Live installation with `tikz`, `libertinus`, `booktabs`,
 `tabularx` and `amsmath`, plus `python3` (standard library only) for the cell
-geometry. On this machine both are present.
+geometry.
 
 ## How it is put together
 
