@@ -26,7 +26,15 @@ bravais-desk.pdf: bravais-desk.tex $(MAIN).tex cells-desk.tex
 desk: bravais-desk.pdf
 
 clean:
-	latexmk -C $(MAIN).tex
-	latexmk -C bravais-desk.tex
+	latexmk -c $(MAIN).tex
+	latexmk -c bravais-desk.tex
 
-.PHONY: all poster desk clean
+distclean: clean
+	rm -f $(MAIN).pdf bravais-desk.pdf
+
+preview: all
+	pdftoppm -png -r 72 -singlefile $(MAIN).pdf preview-poster
+	pdftoppm -png -r 60 -singlefile bravais-desk.pdf preview-desk-1 -f 1 -l 1
+	pdftoppm -png -r 60 -singlefile bravais-desk.pdf preview-desk-2 -f 2 -l 2
+
+.PHONY: all poster desk clean distclean preview

@@ -24,7 +24,9 @@ Desk copy, page 1 and page 2:
 make            # both sheets
 make poster     # A3 portrait only
 make desk       # A3 landscape only
-make clean      # remove intermediate files
+make clean      # remove intermediate files, keep the PDFs
+make distclean  # also remove the PDFs
+make preview    # refresh the PNG previews
 ```
 
 Requirements: a TeX Live installation with `tikz`, `libertinus`, `booktabs`,
