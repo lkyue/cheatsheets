@@ -1,0 +1,337 @@
+% Bravais lattice reference sheet -- A3 portrait
+% Build:  make          (or: python3 gen_cells.py && latexmk -pdf bravais-lattices.tex)
+\documentclass[11pt]{article}
+\ifdefined\deskbuild
+  \usepackage[a3paper,landscape,margin=13mm]{geometry}
+  \def\colwIII{53.5mm}
+  \def\colwII{76mm}
+  \def\cellfile{cells-desk}
+  \def\tablefont{\fontsize{12}{13.4}\selectfont}
+  \def\capfont{\fontsize{10}{11.6}\selectfont}
+  \def\notesfont{\fontsize{12}{13.6}\selectfont}
+  \def\titlefont{\fontsize{36}{38}\selectfont}
+  \def\rowgap{4mm}
+  \def\rowA{11mm}\def\rowB{7mm}
+  \def\arrstretch{1.42}
+  \def\tcA{30mm}\def\tcB{34mm}\def\tcD{24mm}\def\tcE{16mm}
+  \def\tcF{16mm}\def\tcG{85mm}\def\tcH{33mm}
+\else
+  \usepackage[a3paper,margin=12mm]{geometry}
+  \def\colwIII{37.6mm}
+  \def\colwII{52.5mm}
+  \def\cellfile{cells}
+  \def\tablefont{\fontsize{11}{12.6}\selectfont}
+  \def\capfont{\footnotesize}
+  \def\notesfont{\fontsize{11}{12.6}\selectfont}
+  \def\titlefont{\fontsize{36}{38}\selectfont}
+  \def\rowgap{3.5mm}
+  \def\rowA{3.4mm}\def\rowB{1.0mm}
+  \def\arrstretch{1.12}
+  \def\tcA{25.5mm}\def\tcB{26mm}\def\tcD{20.5mm}\def\tcE{13mm}
+  \def\tcF{13mm}\def\tcG{63mm}\def\tcH{26mm}
+\fi
+\usepackage[T1]{fontenc}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{booktabs,tabularx,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{\arrstretch}
+
+\definecolor{cellaccent}{HTML}{B4472F}
+
+\tikzset{
+  diagram bg/.style    = {fill=black!3},
+  cell wash/.style     = {fill=black!10},
+  cell edge/.style     = {draw=black!75, line width=0.5pt,
+                          line join=round, line cap=round},
+  lattice point/.style = {draw=none, fill=black},
+  centre point/.style  = {draw=none, fill=cellaccent},
+  axis arrow/.style    = {draw=black!65, line width=0.45pt,
+                          -{Stealth[length=1.2mm,width=0.9mm]}},
+  axis label small/.style = {inner sep=0.2pt,
+                          font=\fontsize{6}{7}\selectfont\itshape,
+                          text=black!75},
+  axis label/.style    = {inner sep=0.3pt,
+                          font=\fontsize{7}{8}\selectfont\itshape,
+                          text=black!75},
+}
+
+% ---------------------------------------------------------------- components
+\input{\cellfile}
+
+\newcommand{\cellfig}[1]{%
+  \begin{tikzpicture}[x=1mm,y=1mm]\csname cell#1\endcsname\end{tikzpicture}}
+
+\newcommand{\lgdpoint}{\tikz[baseline=-0.45ex]{\fill[lattice point](0,0) circle(2pt);}}
+\newcommand{\lgdcentre}{\tikz[baseline=-0.45ex]{\fill[centre point](0,0) circle(2pt);}}
+
+% #1 cell macro, #2 crystal system, #3 lattice symbol, #4 centring and points,
+% #5 cell parameters, #6 symmetry, #7 closing note (may be empty)
+\newcommand{\card}[7]{%
+  \centering
+  \cellfig{#1}\par
+  \vspace{0.6mm}%
+  \begingroup
+  \fontsize{10.5}{11.8}\selectfont
+  {\fontsize{12}{13.4}\selectfont #2\enspace\textbf{#3}}\par
+  \vspace{0.1mm}%
+  {\itshape #4}\par
+  \vspace{0.7mm}%
+  #5\par
+  \vspace{0.25mm}%
+  #6\par
+  \def\cardnote{#7}%
+  \ifx\cardnote\empty\else\vspace{0.2mm}{\color{black!55}#7}\par\fi
+  \endgroup
+}
+
+% landscape only: diagram beside the text, so the 2-D row stays short
+\newcommand{\cardH}[7]{%
+  \begin{minipage}[t]{0.51\linewidth}\vspace{0pt}\centering\cellfig{#1}\end{minipage}%
+  \hspace{3.5mm}%
+  \begin{minipage}[t]{0.43\linewidth}\vspace{4.5mm}\raggedright
+    \begingroup
+    \fontsize{10.5}{11.8}\selectfont
+    {\fontsize{12}{13.4}\selectfont #2\enspace\textbf{#3}}\par
+    \vspace{0.1mm}{\itshape #4}\par
+    \vspace{0.7mm}#5\par
+    \vspace{0.25mm}#6\par
+    \vspace{0.2mm}{\color{black!55}#7}\par
+    \endgroup
+  \end{minipage}}
+
+\newcommand{\cardii}[7]{%
+  \ifdefined\deskbuild\cardH{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \else\card{#1}{#2}{#3}{#4}{#5}{#6}{#7}\fi}
+
+\newcommand{\sechead}[2]{%
+  \par\vspace{1.5mm}%
+  {\sffamily\bfseries\large #1}\hfill{\small\color{black!55}#2}\par
+  \vspace{1.6mm}%
+  {\color{black!22}\rule{\textwidth}{0.5pt}}\par
+  \vspace{3mm}%
+}
+
+\ifdefined\deskbuild
+  \hypersetup{pdftitle={Bravais lattices --- reference sheet (A3 landscape desk copy)},
+              pdfsubject={The 5 two-dimensional and 14 three-dimensional Bravais lattices: crystal systems, conventional cells, symmetry and unit-cell properties}}
+\else
+  \hypersetup{pdftitle={Bravais lattices --- reference sheet},
+              pdfsubject={The 5 two-dimensional and 14 three-dimensional Bravais lattices: crystal systems, conventional cells, symmetry and unit-cell properties}}
+\fi
+
+\begin{document}
+
+% ------------------------------------------------------------------- header
+\begin{minipage}[b]{0.58\textwidth}
+	{\sffamily\bfseries\titlefont Bravais lattices}\par
+	\vspace{1.8mm}
+	{\Large The 5 two-dimensional and 14 three-dimensional lattice types}\par
+	\vspace{0.8mm}
+	{\large\color{black!60}crystal systems \textperiodcentered{}
+		conventional cells \textperiodcentered{} symmetry \textperiodcentered{}
+		cell properties}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.39\textwidth}
+	\raggedleft\normalsize
+	\textbf{2D}\quad 5 lattices \textperiodcentered{} 4 systems
+	\textperiodcentered{} 10 point groups \textperiodcentered{} 17 wallpaper groups\par
+	\vspace{1.2mm}
+	\textbf{3D}\quad 14 lattices \textperiodcentered{} 7 systems
+	\textperiodcentered{} 32 point groups \textperiodcentered{} 230 space groups
+\end{minipage}
+
+\vspace{4mm}
+{\color{black!22}\rule{\textwidth}{0.7pt}}
+\vspace{2.6mm}
+
+{\normalsize
+  \makebox[5.5mm][l]{\lgdpoint} lattice point \quad
+  \makebox[5.5mm][l]{\lgdcentre} centring point \quad
+  \makebox[7mm][l]{\color{black!55}\rule[0.55ex]{5mm}{0.6pt}} conventional cell
+  edge \quad $a,b,c$ unit-cell vectors \quad
+  the cell drawn in each panel is the conventional cell}
+\vspace{2mm}
+
+% ---------------------------------------------------------------------- 2D
+\sechead{Two dimensions}{5 lattices \textperiodcentered{} 4 crystal systems
+	\textperiodcentered{} 17 wallpaper groups \textperiodcentered{}
+	cell area $ab\sin\gamma$}
+
+\noindent
+\begin{tabular}{@{}*{5}{>{\centering\arraybackslash}p{\colwII}}@{}}
+	\cardii{Oblique}{Oblique}{p}{primitive, 1 point}%
+	{$a\neq b$, $\gamma\neq90^\circ$}%
+	{holohedry $2$}%
+	{$p1$, $p2$}   &
+	\cardii{RectP}{Rectangular}{p}{primitive, 1 point}%
+	{$a\neq b$, $\gamma=90^\circ$}%
+	{holohedry $2mm$}%
+	{$p1m1$, $p1g1$, $p2mm$, $p2mg$, $p2gg$} &
+	\cardii{RectC}{Rectangular}{c}{centred, 2 points}%
+	{$a\neq b$, $\gamma=90^\circ$}%
+	{holohedry $2mm$}%
+	{$c1m1$, $c2mm$}  &
+	\cardii{Square}{Square}{p}{primitive, 1 point}%
+	{$a=b$, $\gamma=90^\circ$}%
+	{holohedry $4mm$}%
+	{$p4$, $p4mm$, $p4gm$}     &
+	\cardii{Hexagonal}{Hexagonal}{p}{primitive, 1 point}%
+	{$a=b$, $\gamma=120^\circ$}%
+	{holohedry $6mm$}%
+	{$p3$, $p3m1$, $p31m$, $p6$, $p6mm$} \tabularnewline
+\end{tabular}
+
+% ---------------------------------------------------------------------- 3D
+\sechead{Three dimensions}{14 lattices \textperiodcentered{} 7 crystal systems
+	\textperiodcentered{} 32 point groups \textperiodcentered{} 230 space groups}
+
+\noindent
+\begin{tabular}{@{}*{7}{>{\centering\arraybackslash}p{\colwIII}}@{}}
+	\card{TriclinicP}{Triclinic}{P}{primitive, 1 point}%
+	{$a\neq b\neq c$\par $\alpha\neq\beta\neq\gamma\neq90^\circ$}%
+	{holohedry $\bar{1}$}{} &
+	\card{MonoclinicP}{Monoclinic}{P}{primitive, 1 point}%
+	{$a\neq b\neq c$\par $\alpha=\gamma=90^\circ\neq\beta$}%
+	{holohedry $2/m$}{}      &
+	\card{MonoclinicC}{Monoclinic}{C}{base-centred, 2 points}%
+	{$a\neq b\neq c$\par $\alpha=\gamma=90^\circ\neq\beta$}%
+	{holohedry $2/m$}{}  &
+	\card{OrthoP}{Orthorhombic}{P}{primitive, 1 point}%
+	{$a\neq b\neq c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $mmm$}{}         &
+	\card{OrthoC}{Orthorhombic}{C}{base-centred, 2 points}%
+	{$a\neq b\neq c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $mmm$}{}     &
+	\card{OrthoI}{Orthorhombic}{I}{body-centred, 2 points}%
+	{$a\neq b\neq c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $mmm$}{}     &
+	\card{OrthoF}{Orthorhombic}{F}{face-centred, 4 points}%
+	{$a\neq b\neq c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $mmm$}{} \tabularnewline[\rowgap]
+	\card{TetraP}{Tetragonal}{P}{primitive, 1 point}%
+	{$a=b\neq c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $4/mmm$}{}           &
+	\card{TetraI}{Tetragonal}{I}{body-centred, 2 points}%
+	{$a=b\neq c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $4/mmm$}{}       &
+	\card{RhomboR}{Trigonal}{R}{rhombohedral, 1 point}%
+	{$a=b=c$\par $\alpha=\beta=\gamma\neq90^\circ$}%
+	{holohedry $\bar{3}m$}{}         &
+	\card{HexP}{Hexagonal}{P}{primitive, 1 point}%
+	{$a=b\neq c$\par $\alpha=\beta=90^\circ$, $\gamma=120^\circ$}%
+	{holohedry $6/mmm$}{}              &
+	\card{CubicP}{Cubic}{P}{primitive, 1 point}%
+	{$a=b=c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $m\bar{3}m$}{}                &
+	\card{CubicI}{Cubic}{I}{body-centred, 2 points}%
+	{$a=b=c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $m\bar{3}m$}{}            &
+	\card{CubicF}{Cubic}{F}{face-centred, 4 points}%
+	{$a=b=c$\par $\alpha=\beta=\gamma=90^\circ$}%
+	{holohedry $m\bar{3}m$}{} \tabularnewline
+\end{tabular}
+
+\ifdefined\deskbuild\clearpage\fi
+% ------------------------------------------------------------------- table
+\sechead{Symmetry and unit-cell properties of the seven crystal systems}%
+{point groups and space groups counted per system}
+
+{\tablefont
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{\tcA} p{\tcB} X p{\tcD}
+			>{\centering\arraybackslash}p{\tcE}
+			>{\centering\arraybackslash}p{\tcF} p{\tcG}
+			>{\centering\arraybackslash}p{\tcH}@{}}
+		\toprule
+		\textbf{Crystal system}              & \textbf{Lattices}                                      & \textbf{Cell parameters}                                 &
+		\textbf{Holohedry}                   & \textbf{Point groups}                                  & \textbf{Space groups}                                    &
+		\textbf{Volume of conventional cell} & \textbf{Points per cell} \tabularnewline
+		\midrule
+		Triclinic                            & P                                                      & $a\neq b\neq c$; $\alpha\neq\beta\neq\gamma\neq90^\circ$
+		                                     & $\bar{1}$                                              & 2                                                        & 2
+		                                     & $abc\,\bigl(1+2\cos\alpha\cos\beta\cos\gamma$ \newline
+		$\quad-\cos^2\alpha-\cos^2\beta-\cos^2\gamma\bigr)^{1/2}$
+		                                     & 1 \tabularnewline[\rowA]
+		Monoclinic                           & P, C                                                   & $a\neq b\neq c$; $\alpha=\gamma=90^\circ\neq\beta$
+		                                     & $2/m$                                                  & 3                                                        & 13 & $abc\,\sin\beta$          & 1, 2 \tabularnewline[\rowB]
+		Orthorhombic                         & P, C, I, F                                             & $a\neq b\neq c$; $\alpha=\beta=\gamma=90^\circ$
+		                                     & $mmm$                                                  & 3                                                        & 59 & $abc$                     & 1, 2, 2, 4 \tabularnewline[\rowB]
+		Tetragonal                           & P, I                                                   & $a=b\neq c$; $\alpha=\beta=\gamma=90^\circ$
+		                                     & $4/mmm$                                                & 7                                                        & 68 & $a^2c$                    & 1, 2 \tabularnewline[\rowB]
+		Trigonal                             & R                                                      & $a=b=c$; $\alpha=\beta=\gamma\neq90^\circ$
+		                                     & $\bar{3}m$                                             & 5                                                        & 25
+		                                     & $a^3\bigl(1-3\cos^2\alpha+2\cos^3\alpha\bigr)^{1/2}$
+		                                     & 1 (3 in hex.) \tabularnewline[\rowB]
+		Hexagonal                            & P                                                      & $a=b\neq c$; $\alpha=\beta=90^\circ$, $\gamma=120^\circ$
+		                                     & $6/mmm$                                                & 7                                                        & 27 & $\tfrac{\sqrt3}{2}\,a^2c$ & 1 \tabularnewline[\rowB]
+		Cubic                                & P, I, F                                                & $a=b=c$; $\alpha=\beta=\gamma=90^\circ$
+		                                     & $m\bar{3}m$                                            & 5                                                        & 36 & $a^3$                     & 1, 2, 4 \tabularnewline
+		\midrule
+		\textbf{Total}                       & \textbf{14}                                            &                                                          &    & \textbf{32}               & \textbf{230}                      &  & \tabularnewline
+		\bottomrule
+	\end{tabularx}}
+
+\ifdefined\deskbuild\vspace{9mm}\else\vspace{2mm}\fi
+
+% ------------------------------------------------------------------- notes
+% ---------------------------------------------------------------- footnotes
+% the four notes are defined once and laid out 3-up (poster) or 5-up (desk)
+\newcommand{\noteA}{\textbf{Not Bravais lattices.} hcp, diamond, graphene and
+  NaCl are not lattice types: each is a Bravais lattice carrying a multi-atom
+  basis. hcp is the hexagonal P lattice with a two-atom basis — its cell holds
+  two atoms but contributes one lattice point. Graphene sits on one of the five
+  two-dimensional lattices.}
+
+\newcommand{\noteB}{\textbf{Centring is not always a new lattice.} C-centred
+  tetragonal is not a separate type: its primitive cell is a smaller tetragonal
+  cell of the same symmetry. C-centred cubic is not a lattice type at all —
+  centring a cubic cell destroys the cubic symmetry, and the result is a
+  primitive tetragonal lattice with $c/a=\sqrt2$. Base-centred monoclinic has C
+  and I settings: one lattice, two cells.}
+
+\newcommand{\noteC}{\textbf{Holohedry.} The point group of the lattice itself,
+  the largest point group of the crystal system. It describes the symmetry of
+  the infinite lattice, which a cell drawn for it need not visibly show.
+  Point groups and space groups are counted per system, not per lattice.}
+
+\newcommand{\noteD}{\textbf{Why only 14.} A lattice type is fixed by the point
+  symmetry of its cell; centring adds a point without lowering that symmetry,
+  and further cell choices are absorbed into the primitive cell. Searching the
+  seven systems for compatible centrings gives $1+2+4+2+1+1+3=14$.}
+
+\newcommand{\notefig}{%
+  \centering
+  \begin{tikzpicture}[x=1mm,y=1mm]
+    \begin{scope}[scale=0.82]\cellRhomboRBare\end{scope}
+    \begin{scope}[xshift=24.5mm, yshift=-3mm, scale=0.92]\cellRhomboHex\end{scope}
+  \end{tikzpicture}\par
+  \vspace{1.5mm}
+  {\capfont\color{black!60}\raggedright
+  The rhombohedral lattice in its two settings: the rhombohedral cell (left,
+  one lattice point) and the hexagonal cell (right, three — one at the corners,
+  two inside).\par}}
+
+{\notesfont
+\ifdefined\deskbuild
+  \def\notewidth{0.188\textwidth}
+  \begin{minipage}[t]{\notewidth}\vspace{0pt}\raggedright\noteA\end{minipage}\hfill
+  \begin{minipage}[t]{\notewidth}\vspace{0pt}\raggedright\noteB\end{minipage}\hfill
+  \begin{minipage}[t]{\notewidth}\vspace{0pt}\raggedright\noteC\end{minipage}\hfill
+  \begin{minipage}[t]{\notewidth}\vspace{0pt}\raggedright\noteD\end{minipage}\hfill
+  \begin{minipage}[t]{\notewidth}\vspace{0pt}\notefig\end{minipage}%
+\else
+  \begin{minipage}[t]{0.335\textwidth}\vspace{0pt}\noteA\par\vspace{2.5mm}\noteB\end{minipage}\hfill
+  \begin{minipage}[t]{0.315\textwidth}\vspace{0pt}\noteC\par\vspace{2.5mm}\noteD\end{minipage}\hfill
+  \begin{minipage}[t]{0.30\textwidth}\vspace{0pt}\notefig\end{minipage}%
+\fi}
+
+\end{document}
