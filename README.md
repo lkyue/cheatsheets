@@ -94,4 +94,4 @@ Deliberate simplifications:
 
 ## Licence
 
-None declared. Add one before redistributing.
+MIT — see [LICENSE](LICENSE).
