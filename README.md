@@ -36,9 +36,13 @@ geometry.
 ## How it is put together
 
 `gen_cells.py` holds each lattice as six cell parameters, converts them to
-vectors, projects them orthographically (a to the right, b receding up-left, c
-up), fits each cell to a fixed panel and writes plain TikZ coordinates in
-millimetres. Every drawing therefore follows from its parameters and cannot be
+vectors and projects them through a real orthographic camera, so the panels are
+true axonometric views rather than sheared boxes: a cubic cell looks like a
+cube, and a 90° corner reads as a 90° corner. **a** points up-right, **b**
+up-left, **c** straight up; edges of the faces turned away from the camera are
+drawn lighter and the three faces facing it carry a very light wash. Each cell
+is fitted to a fixed panel and written out as plain TikZ coordinates in
+millimetres, so every drawing follows from its parameters and cannot be
 misplaced by hand.
 
 ```
@@ -57,7 +61,10 @@ sizes, row spacing and page breaks. The content — 19 cards, the table, four
 notes — is written once.
 
 To change a cell, edit its parameters in `gen_cells.py` and rebuild. To change
-the view, edit `KY_X`, `KY_Y`, `KX_Y` at the top; every cell follows.
+the view, edit `AZIMUTH` and `ELEVATION` at the top; every cell follows. They
+are deliberately not the isometric pair: in an isometric view the centre of a
+cubic cell falls exactly behind the corner at (0, 0, 1), so the body-centre
+point of a body-centred lattice would sit on a corner point.
 
 ## Reproducibility
 
@@ -71,6 +78,13 @@ PDFs. Rebuilding does not churn the binaries in this repository.
   base or cell centre).
 - Thin grey line: edge of the conventional cell. Arrows: the cell vectors
   **a**, **b**, **c**.
+- Edges of faces turned away from the camera are drawn lighter, and the three
+  faces turned towards it carry a very light wash, so the cell reads as a solid
+  body rather than a wire frame.
+- Cell angles: α is the angle between **b** and **c**, β between **a** and
+  **c**, γ between **a** and **b**. These are the true angles between the cell
+  vectors, not the angles that appear in the projection — which is why a right
+  angle need not look like one.
 - The panel in each card is a fixed frame, not part of the drawing.
 - 2-D cells are drawn in plan with a patch of surrounding lattice points; the
   shaded parallelogram is the conventional cell.

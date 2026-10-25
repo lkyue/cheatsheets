@@ -55,18 +55,30 @@
 \tikzset{
   diagram bg/.style    = {fill=black!3},
   cell wash/.style     = {fill=black!10},
+  face wash/.style     = {fill=black!5},
   cell edge/.style     = {draw=black!75, line width=0.5pt,
+                          line join=round, line cap=round},
+  cell edge back/.style= {draw=black!32, line width=0.4pt,
                           line join=round, line cap=round},
   lattice point/.style = {draw=none, fill=black},
   centre point/.style  = {draw=none, fill=cellaccent},
-  axis arrow/.style    = {draw=black!65, line width=0.45pt,
-                          -{Stealth[length=1.2mm,width=0.9mm]}},
+  axis arrow/.style    = {draw=black!90, line width=0.6pt,
+                          -{Stealth[length=1.25mm,width=0.95mm]}},
+  triad axis/.style    = {draw=black!68, line width=0.5pt,
+                          -{Stealth[length=1.1mm,width=0.85mm]}},
+  angle arc/.style     = {draw=black!50, line width=0.35pt},
+  angle label/.style   = {inner sep=0.5pt,
+                          font=\fontsize{7}{8}\selectfont,
+                          text=black!70, fill=white, fill opacity=0.85,
+                          text opacity=1},
   axis label small/.style = {inner sep=0.2pt,
                           font=\fontsize{6}{7}\selectfont\itshape,
-                          text=black!75},
+                          text=black!75, fill=white, fill opacity=0.75,
+                          text opacity=1},
   axis label/.style    = {inner sep=0.3pt,
                           font=\fontsize{7}{8}\selectfont\itshape,
-                          text=black!75},
+                          text=black!75, fill=white, fill opacity=0.75,
+                          text opacity=1},
 }
 
 % ---------------------------------------------------------------- components
@@ -151,10 +163,19 @@
 	\textperiodcentered{} 10 point groups \textperiodcentered{} 17 wallpaper groups\par
 	\vspace{1.2mm}
 	\textbf{3D}\quad 14 lattices \textperiodcentered{} 7 systems
-	\textperiodcentered{} 32 point groups \textperiodcentered{} 230 space groups
+	\textperiodcentered{} 32 point groups \textperiodcentered{} 230 space groups\par
+	\vspace{2.4mm}
+	\raggedright
+	\begin{minipage}[c]{20mm}\centering\cellfig{Triad}\end{minipage}%
+	\hspace{1.4mm}%
+	\begin{minipage}[c]{\dimexpr\linewidth-21.4mm\relax}\raggedright\small
+		\textbf{Cell angles:} $\alpha$ between $b$ and $c$, $\beta$ between $a$
+		and $c$, $\gamma$ between $a$ and $b$ --- the true angles between the cell
+		vectors, so a right angle need not look like one.\par
+	\end{minipage}
 \end{minipage}
 
-\vspace{4mm}
+\vspace{3mm}
 {\color{black!22}\rule{\textwidth}{0.7pt}}
 \vspace{2.6mm}
 
