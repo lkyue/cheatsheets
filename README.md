@@ -1,111 +1,26 @@
-# Bravais lattice reference sheet
+# Cheatsheets
 
-Two print-ready A3 sheets covering the 5 two-dimensional and 14
-three-dimensional Bravais lattices: conventional cells drawn from their own
-lattice vectors, crystal systems, centring, holohedry, point/space-group counts
-and unit-cell properties.
+One-page reference sheets. Each sheet lives in its own folder with its source
+and a compiled PDF next to it.
 
-![The A3 poster](preview-poster.png)
-
-| File | Format | Contents |
+| Sheet | Covers | Build |
 | --- | --- | --- |
-| `bravais-lattices.pdf` | A3 portrait, 1 page | Wall sheet: legend, 5 2-D and 14 3-D cells, symmetry table, notes |
-| `bravais-desk.pdf` | A3 landscape, 2 pages | Desk copy: page 1 the 19 cells at a larger size, page 2 the table and notes |
+| [bravais-lattices](bravais-lattices/) | The 5 two-dimensional and 14 three-dimensional Bravais lattices, with cells drawn from their own lattice parameters | `cd bravais-lattices && make` |
+| [moments-of-inertia](moments-of-inertia/) | Second moment of area and mass moment of inertia for common sections and bodies | `cd moments-of-inertia && typst compile moi-cheatsheet.typ` |
 
-Desk copy, page 1 and page 2:
+Both build to a single A4 landscape page.
 
-| | |
-| --- | --- |
-| ![desk page 1](preview-desk-1.png) | ![desk page 2](preview-desk-2.png) |
-
-## Build
-
-```sh
-make            # both sheets
-make poster     # A3 portrait only
-make desk       # A3 landscape only
-make clean      # remove intermediate files, keep the PDFs
-make distclean  # also remove the PDFs
-make preview    # refresh the PNG previews
-```
-
-Requirements: a TeX Live installation with `tikz`, `libertinus`, `booktabs`,
-`tabularx` and `amsmath`, plus `python3` (standard library only) for the cell
-geometry.
-
-## How it is put together
-
-`gen_cells.py` holds each lattice as six cell parameters, converts them to
-vectors and projects them through a real orthographic camera, so the panels are
-true axonometric views rather than sheared boxes: a cubic cell looks like a
-cube, and a 90° corner reads as a 90° corner. **a** points up-right, **b**
-up-left, **c** straight up; edges of the faces turned away from the camera are
-drawn lighter and the three faces facing it carry a very light wash. Each cell
-is fitted to a fixed panel and written out as plain TikZ coordinates in
-millimetres, so every drawing follows from its parameters and cannot be
-misplaced by hand.
+## Layout
 
 ```
-gen_cells.py ──> cells.tex ────────┐
-      │                            ├──> bravais-lattices.tex ──> bravais-lattices.pdf
-      └──────> cells-desk.tex ─────┘            │
-                                    bravais-desk.tex ──> bravais-desk.pdf
+.
+├── bravais-lattices/     LaTeX + TikZ, Makefile-driven
+└── moments-of-inertia/   Typst + CeTZ
 ```
 
-The generated `cells.tex` and `cells-desk.tex` are committed, so the PDFs can
-be rebuilt with LaTeX alone; `make` refreshes them when `gen_cells.py` changes.
+## Requirements
 
-`bravais-desk.tex` is two lines: it sets `\deskbuild` and inputs the poster
-source, which branches on that flag for paper geometry, column widths, figure
-sizes, row spacing and page breaks. The content — 19 cards, the table, four
-notes — is written once.
-
-To change a cell, edit its parameters in `gen_cells.py` and rebuild. To change
-the view, edit `AZIMUTH` and `ELEVATION` at the top; every cell follows. They
-are deliberately not the isometric pair: in an isometric view the centre of a
-cubic cell falls exactly behind the corner at (0, 0, 1), so the body-centre
-point of a body-centred lattice would sit on a corner point.
-
-## Reproducibility
-
-The preamble sets `\pdfinfoomitdate`, `\pdfsuppressptexinfo` and an empty
-`\pdftrailerid`, so two builds of the same source produce byte-identical
-PDFs. Rebuilding does not churn the binaries in this repository.
-
-## Conventions on the sheet
-
-- Filled black dot: lattice point. Terracotta dot: centring point (face, body,
-  base or cell centre).
-- Thin grey line: edge of the conventional cell. Arrows: the cell vectors
-  **a**, **b**, **c**.
-- Edges of faces turned away from the camera are drawn lighter, and the three
-  faces turned towards it carry a very light wash, so the cell reads as a solid
-  body rather than a wire frame.
-- Cell angles: α is the angle between **b** and **c**, β between **a** and
-  **c**, γ between **a** and **b**. These are the true angles between the cell
-  vectors, not the angles that appear in the projection — which is why a right
-  angle need not look like one.
-- The panel in each card is a fixed frame, not part of the drawing.
-- 2-D cells are drawn in plan with a patch of surrounding lattice points; the
-  shaded parallelogram is the conventional cell.
-
-## Sources and caveats
-
-Values follow the International Tables for Crystallography, Vol. A: system
-assignment, conventional cells, holohedral point groups (1̄, 2/m, mmm, 4/mmm,
-3̄m, 6/mmm, m3̄m), 32 point groups and 230 space groups with their per-system
-counts, and the standard cell-volume expressions.
-
-Deliberate simplifications:
-
-- The triclinic condition is written with a chained `≠` ("a ≠ b ≠ c, α ≠ β ≠ γ
-  ≠ 90°"), the usual shorthand for "no accidental symmetry". It is not a strict
-  logical restriction.
-- The trigonal row lists the R lattice, which is the trigonal Bravais lattice.
-  Seven of the 25 trigonal space groups (P3, P3₁21, …) instead use a primitive
-  cell of the hexagonal lattice.
-- Cell drawings use illustrative axial ratios and angles, not real substances.
-
-## Licence
-
-MIT — see [LICENSE](LICENSE).
+- **bravais-lattices** — a TeX Live installation (`pdflatex`, `latexmk`) and
+  Python 3 for `gen_cells.py`
+- **moments-of-inertia** — Typst 0.15 or newer; CeTZ 0.5.2 is fetched from
+  Typst Universe on first build
