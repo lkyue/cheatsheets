@@ -56,11 +56,12 @@
   line((x, y), ..arc-pts, close: true)
 }
 
-#let dimh(a, b, y, label, up: false) = {
+#let dimh(a, b, y, label, up: false, tx: auto) = {
   line((a, y), (b, y),
     stroke: (paint: soft, thickness: .3pt),
     mark: (start: "bar", end: "bar"))
-  content(((a + b) / 2, if up { y + .09 } else { y - .115 }),
+  content((if tx == auto { (a + b) / 2 } else { tx },
+      if up { y + .09 } else { y - .115 }),
     text(size: T, fill: soft)[#label])
 }
 
@@ -108,13 +109,15 @@
 #let f-hollow = fig(tA, {
   rect((0.28, 0.28), (1.60, 1.14))
   rect((0.54, 0.50), (1.34, 0.92), fill: white)
+  caxis(0.94, 0.71, w: 1.52, h: 0.98)
   dimh(0.28, 1.60, 0.17, [$B$])
-  dimh(0.54, 1.34, 0.40, [$b$])
+  dimh(0.54, 1.34, 0.40, [$b$], tx: 1.16)
 })
 
 #let f-para = fig(tA, {
   line((0.40, 0.30), (1.34, 0.30), (1.58, 1.10), (0.64, 1.10), close: true)
   caxis(0.99, 0.70, w: 1.05)
+  line((0.36, 0.30), (1.38, 0.30), stroke: (paint: axiscol, dash: "dash-dotted", thickness: .38pt))
   dimh(0.40, 1.34, 0.18, [$b$])
   dimv(1.69, 0.30, 1.10, [$h$])
 })
@@ -122,6 +125,7 @@
 #let f-iso = fig(tA, {
   line((0.93, 1.14), (1.62, 0.26), (0.24, 0.26), close: true)
   caxis(0.93, 0.553, w: 0.78)
+  line((0.20, 0.26), (1.66, 0.26), stroke: (paint: axiscol, dash: "dash-dotted", thickness: .38pt))
   dimh(0.24, 1.62, 0.14, [$b$])
   dimv(1.74, 0.26, 1.14, [$h$])
 })
@@ -135,6 +139,8 @@
 
 #let f-trap = fig(tA, {
   line((0.60, 1.10), (1.30, 1.10), (1.64, 0.26), (0.26, 0.26), close: true)
+  cdot(0.95, 0.634)
+  line((0.36, 0.634), (1.54, 0.634), stroke: (paint: axiscol, dash: "dash-dotted", thickness: .38pt))
   dimh(0.60, 1.30, 1.19, [$a$], up: true)
   dimh(0.26, 1.64, 0.14, [$b$])
   dimv(1.76, 0.26, 1.10, [$h$])
@@ -198,6 +204,8 @@
   line((0.36, 1.04), (0.56, 1.16), (1.64, 1.16), (1.44, 1.04),
     stroke: .42pt + ink, fill: tB)
   line((1.44, 0.30), (1.64, 0.42), (1.64, 1.16), stroke: .42pt + ink, fill: none)
+  cdot(0.90, 0.67)
+  content((1.04, 0.80), text(size: T, fill: soft)[$z$])
   dimh(0.36, 1.44, 0.18, [$a$])
   dimv(1.76, 0.30, 1.04, [$b$])
 })
@@ -221,8 +229,9 @@
     stroke: .42pt + ink, fill: none)
   circle((0.93, 1.00), radius: (0.35, 0.10), fill: tB)
   circle((0.93, 0.34), radius: (0.35, 0.10), fill: none)
-  line((0.93, 0.16), (0.93, 1.22),
+  line((0.93, 0.16), (0.93, 1.12),
     stroke: (paint: axiscol, dash: "dash-dotted", thickness: .38pt))
+  dimh(0.93, 1.28, 1.14, [$R$], up: true)
   dimv(1.48, 0.34, 1.00, [$L$])
 })
 
@@ -231,7 +240,8 @@
   circle((0.93, 0.36), radius: (0.57, 0.13), fill: tB)
   line((0.93, 0.20), (0.93, 1.24),
     stroke: (paint: axiscol, dash: "dash-dotted", thickness: .38pt))
-  dimv(1.62, 0.36, 0.49, [$R$])
+  line((1.50, 0.23), (1.50, 0.18), stroke: (paint: soft, thickness: .3pt))
+  dimh(0.93, 1.50, 0.18, [$R$])
 })
 
 // ============================================================
@@ -327,13 +337,13 @@
   card(cA, [Trapezoid], f-trap, (
     [$A = ((a + b) h) \/ 2$],
     [$overline(I)_x = (h^3 (a^2 + 4 a b + b^2)) \/ (36 (a + b))$],
-    [$overline(y) = (h (2a + b)) \/ (3(a+b))$],
+    [$overline(y) = (h (2a + b)) \/ (3(a+b))$  from base $b$],
   )),
   card(cA, [Circle $r$], f-circle, (
     [$A = pi r^2$],
     [$I_x = I_y = (pi r^4) \/ 4$],
     [$J_O = (pi r^4) \/ 2$],
-    [$I_x = (pi d^4) \/ 64$],
+    [$I_x = (pi d^4) \/ 64 quad (d = 2r)$],
   )),
   card(cA, [Annulus $R$, $r$], f-annulus, (
     [$A = pi (R^2 - r^2)$],
@@ -374,12 +384,12 @@
   )),
   card(cB, [Rectangular plate], f-plate, (
     [$I_z = (m (a^2 + b^2)) \/ 12$],
-    [$I_"edge" = (m a^2) \/ 3$],
+    [$I_"edge ∥ b" = (m a^2) \/ 3$],
   )),
   card(cB, [Disk / ring], f-diskring, (
     [disk $I_z = 1/2 m R^2$],
     [disk $I_"diam" = 1/4 m R^2$],
-    [ring $I_z = m R^2$],
+    [ring (thin) $I_z = m R^2$],
   )),
   card(cB, [Sphere], f-sphere, (
     [solid $I = 2/5 m R^2$],
@@ -388,12 +398,12 @@
   )),
   card(cB, [Cylinder, length $L$], f-cyl, (
     [$I_"axis" = 1/2 m R^2$],
-    [$I_"centroid" = 1/4 m R^2 + (m L^2) \/ 12$],
+    [$I_"transv" = 1/4 m R^2 + (m L^2) \/ 12$],
     [thin shell $I_"axis" = m R^2$],
   )),
   card(cB, [Solid cone, height $h$], f-cone, (
     [$I_"axis" = 3/10 m R^2$],
-    [$I_"centroid" = 3/20 m R^2 + (3 m h^2) \/ 80$],
+    [$I_"transv" = 3/20 m R^2 + (3 m h^2) \/ 80$],
   )),
 ))
 
@@ -418,7 +428,7 @@
       [
         T-section, flange $100 times 20$ on web $20 times 80$ (#h(0.15em)total depth 100 mm):
         $A = 3600$ mm², $overline(y) = 67.8$ mm from the base, giving
-        $I_x approx 3.14 times 10^6$ mm⁴.
+        $I_x approx 3.14 times 10^6$ mm⁴ (about the base).
       ],
       text(fill: soft)[$d$ = centroid-to-axis distance  #h(8pt) $d = 0$ on a centroidal axis],
     )
